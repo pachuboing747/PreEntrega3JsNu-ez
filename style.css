@@ -1,0 +1,39 @@
+.contenedor{
+    background-color: rgb(30, 30, 224);
+}
+h1{
+    color: yellow;
+    display: flex;
+    justify-content: center;
+
+}
+h2{
+    color: yellow;
+    display: flex;
+    justify-content: center;
+}
+h5{
+    color: yellow;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+p{
+    color:  white;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+}
+button{
+    color: yellow;
+    background-color:  rgb(30, 30, 224);
+    border-color: yellow;
+    font-size: 15px;
+    display: block;
+    margin: auto;
+}
+li{
+    color: yellow;
+    display:flex;
+}
