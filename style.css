@@ -1,6 +1,14 @@
 .contenedor{
     background-color: rgb(30, 30, 224);
 }
+
+
+img{
+    display: block;
+    margin: auto; 
+    width: 200px;
+   padding: 10px;
+}
 h1{
     color: yellow;
     display: flex;

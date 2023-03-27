@@ -3,34 +3,43 @@ const baseDeDatos = [
         id: 1,
         nombre: "Camiseta Boca Juniors Titular",
         precio: 34999,
+        imagen: './assets/camiseta_titular.jpg'
     },
     {
         id: 2,
         nombre: "Camiseta Boca Juniors Suplente ",
         precio: 34999,
+        imagen: './assets/camiseta_alternativa.jpg'
+      
     },
     {
         id: 3,
         nombre: "Shorts Boca Juniors Titular",
         precio: 15999,
+        imagen: './assets/short_titular.jpg'
+        
     },
     {
         id: 4,
         nombre: "Shorts Boca Juniors suplente",
         precio: 11999,
+        imagen: './assets/short_alternativo.jpg'
+    
 
     },
 
 
 ];
 
-
 let carrito = [];
 const divisa = "$";
-const Items = document.querySelector('#items');
-const Carrito = document.querySelector('#carrito');
-const Total = document.querySelector('#total');
-const BotonVaciar = document.querySelector('#boton-vaciar');
+let Items = document.querySelector("#items");
+let Carrito = document.querySelector("#carrito");
+let Total = document.querySelector("#total");
+let BotonVaciar = document.querySelector("#boton-vaciar");
+let LocalStorage = window.localStorage;
+
+crearCarrito()
 
 function productos() {
     baseDeDatos.forEach((info) => {
@@ -43,6 +52,12 @@ function productos() {
         const miNodoTitle = document.createElement('h5');
         miNodoTitle.classList.add('card-title');
         miNodoTitle.textContent = info.nombre;
+
+        const miNodoImagen = document.createElement('img');
+        miNodoImagen.classList.add('imagen');
+        miNodoImagen.setAttribute('src', info.imagen);
+        miNodoImagen.setAttribute("marcador", info.id);
+        miNodoImagen.addEventListener("click", agregarProductoAlCarrito);
         
         const miNodoPrecio = document.createElement('p');
         miNodoPrecio.classList.add('card-text');
@@ -53,19 +68,28 @@ function productos() {
         miNodoBoton.textContent = "+";
         miNodoBoton.setAttribute("marcador", info.id);
         miNodoBoton.addEventListener("click", agregarProductoAlCarrito);
+       
+        miNodoCardBody.appendChild(miNodoImagen);
         miNodoCardBody.appendChild(miNodoTitle);
         miNodoCardBody.appendChild(miNodoPrecio);
         miNodoCardBody.appendChild(miNodoBoton);
         miNodo.appendChild(miNodoCardBody);
         Items.appendChild(miNodo);
+       
+
     });
+ 
 }
+
 
 function agregarProductoAlCarrito(evento) {
-    carrito.push(evento.target.getAttribute("marcador"))
+    
+    carrito.push(evento.target.getAttribute("marcador"));
     crearCarrito();
-
+    guardarLocalStorage()
 }
+
+
 
 function crearCarrito() {
     Carrito.textContent = "";
@@ -86,7 +110,7 @@ function crearCarrito() {
     
         const miNodo = document.createElement('li');
         miNodo.classList.add("list-group-item");
-        miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${miItem[0].precio}${divisa}`;
+        miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${divisa}${miItem[0].precio}`;
         
         const miBoton = document.createElement('button');
         miBoton.classList.add("btn");
@@ -94,12 +118,14 @@ function crearCarrito() {
         miBoton.style.marginLeft = "1rem";
         miBoton.dataset.item = item;
         miBoton.addEventListener("click", borrarItemCarrito);
-        
+
         miNodo.appendChild(miBoton);
         Carrito.appendChild(miNodo);
+
     });
-    
+  
     Total.textContent = calcularTotal();
+
 }
 
 function borrarItemCarrito(evento) {
@@ -107,7 +133,8 @@ function borrarItemCarrito(evento) {
     carrito = carrito.filter((carritoId) => {
         return carritoId !== id;
     });
-    crearCarrito() 
+    crearCarrito();
+    guardarLocalStorage();
 }
 
 function calcularTotal() { 
@@ -122,10 +149,22 @@ function calcularTotal() {
 function vaciarCarrito() {
     carrito = [];
     crearCarrito() ;
+    localStorage.clear();
 }
+
+function guardarLocalStorage () {
+    LocalStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function cargarLocalStorage () {
+    if (LocalStorage.getItem("carrito") !== null) {
+        carrito = JSON.parse(LocalStorage.getItem("carrito"));
+    }
+}
+
 
 BotonVaciar.addEventListener('click', vaciarCarrito);
 
+cargarLocalStorage();
 productos();
 crearCarrito() ;
-
